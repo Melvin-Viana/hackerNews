@@ -6,13 +6,15 @@ body{
   font-family: Balsamiq Sans, sans-serif;
 }
 
-.container {
-  margin:0 auto;
-  display:flex;
-}
 header {
   width:100%;
 }
+
+.container {
+  margin:0 auto;
+}
+/* ==================== */
+
 .header {
   align-items: center;
   display:flex;
@@ -20,7 +22,7 @@ header {
   background: #FF742B;
   width:100%;
   justify-content: space-between;
-  height:80px;
+  height:55px;
 
 }
 .header * {
@@ -31,18 +33,20 @@ header {
   margin-right: 25px;
 }
 .header div input {
-  font-size:22px;
+  font-size:18px;
   width:100%;
-  height:50px;
-  text-indent:45px;
+  height:35px;
+  text-indent:55px;
 }
+
 .fa-search {
   color:#FF742B;
   position: absolute;
-  top:25px;
-  padding-left:5px;
+  font-size: 25px;
+  top:15px;
+  padding-left:15px;
 }
-
+/* =============== */
 /** Media Queries */
 @media only screen and (min-width:1200px) {
   .container {
