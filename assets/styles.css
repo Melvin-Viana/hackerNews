@@ -1,0 +1,38 @@
+@font-face {
+  font-family:"Balsamiq Sans";
+  src: url('./BalsamiqSans-Regular.ttf')
+}
+body{
+  font-family: Balsamiq Sans, sans-serif;
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  display:flex;
+  max-width: 1080px;
+}
+header {
+  width:100%;
+}
+.header {
+  align-items: center;
+  display:flex;
+  flex-direction: row;
+  background: #FF742B;
+  width:100%;
+  justify-content: space-between;
+  padding:20px 20px;
+}
+.header * {
+  margin: 0 7px;
+}
+.header input {
+  flex-grow:3;
+  height:50px;
+}
+
+/** Media Queries */
+@media only screen and (min-width:576px) {
+
+}
