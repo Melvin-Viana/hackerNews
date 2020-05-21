@@ -10,8 +10,12 @@ header {
   width:100%;
 }
 
-.container {
+.container-hn{
   margin:0 auto;
+  padding:0;
+  background-color: #F6F6EF;
+  /* TODO: REMOVE THIS LATER */
+  height:100vh;
 }
 /* ==================== */
 
@@ -37,6 +41,8 @@ header {
   width:100%;
   height:35px;
   text-indent:55px;
+  padding-top:16px;
+  padding-bottom:16px;
 }
 
 .fa-search {
@@ -46,11 +52,22 @@ header {
   top:15px;
   padding-left:15px;
 }
+
+.btn-light{
+  background-color: transparent!important;
+  border: 1px solid #ccc;
+}
+
+.dropdown-container {
+  margin:15px 10px;
+}
+
 /* =============== */
 /** Media Queries */
-@media only screen and (min-width:1200px) {
-  .container {
-    max-width: 1080px;
+@media only screen and (min-width:1204px) {
+  .container-hn {
+    width:80%;
+
   }
 
 }

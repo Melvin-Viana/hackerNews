@@ -2,7 +2,7 @@ import React from 'react';
 
 const DropDownList = ({selectedOption, handleChange, options}) => (
   <div class="btn-group">
-  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     {selectedOption}
   </button>
   <div class="dropdown-menu">

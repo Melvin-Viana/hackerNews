@@ -1,25 +1,17 @@
 import React from 'react';
 import DropDownList from './DropDownList';
+const categories = ['Stories', 'Comments', 'All'];
+const postFilters = ['Popularity', 'Date'];
+const times = ['All time','Last 24h','Past Week','Past Month', 'Past Year', 'Custom range'];
 const DropDownContainer = ({selectedNews, selectedSort, selectedTime,handleTimeChange}) => {
   return (<div className="dropdown-container">
     <span>Search</span>
-    <input type="select"></input>
+    <DropDownList selectedOption={selectedNews} handleChange={handleTimeChange} options={categories} />
     <span>by</span>
-    <input type="select"></input>
+    <DropDownList selectedOption={selectedSort} handleChange={handleTimeChange} options={postFilters} />
     <span>for</span>
-  <div class="btn-group">
-   <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    {selectedTime}
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#" onClick={(e)=>handleTimeChange(e.target.innerText)}>Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-    <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="#">Separated link</a>
-  </div>
-</div>
-  <DropDownList selectedOption={selectedTime} handleChange={handleTimeChange} options={['All time','Last 24h','Past Week','Past Month', 'Past Year', 'Custom range']} />
+
+  <DropDownList selectedOption={selectedTime} handleChange={handleTimeChange} options={times} />
 </div>)
 }
 
