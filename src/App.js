@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import DropDownContainer from './DropDownContainer';
+import NewsFeed from './NewsFeed';
 const App = props => {
 
   const [selectedPost, setPost] = useState('Stories')
@@ -26,6 +27,7 @@ const App = props => {
     handleSortChange={selectedSort}
     selectedSort={selectedSort}
     />
+    <NewsFeed newsFeed={currentSearchResults}/>
     </React.Fragment>);
 };
 
