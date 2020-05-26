@@ -8,13 +8,12 @@ const App = props => {
   const [selectedPost, setPost] = useState('Stories')
   const [selectedSort, setSort] = useState('Popularity');
   const [selectedTime, setTime] = useState('All Time')
-  const [currentSearchResults, setResults] = useState({});
+  const [currentSearchResults, setResults] = useState([]);
   const [searchQuery, setSearch] = useState('hello');
   useEffect(()=>{
     axios.get(`http://hn.algolia.com/api/v1/search?tags=front_page`)
     .then(res=>{
       setResults(res.data.hits);
-      console.log(res.data)
     })
   },[]);
   return(

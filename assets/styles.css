@@ -63,6 +63,24 @@ header {
 .dropdown-container {
   margin:15px 10px;
 }
+.feed{
+  margin:15px;
+}
+
+.post-data{
+  color:#747d8c;
+  font-size:11px;
+}
+.story-text{
+  font-family:'lato', sans-serif;
+  font-size:14px;
+  line-height: 15px;
+
+}
+.story-text p{
+  margin-top:7px;
+  margin-bottom:7px;
+}
 
 /* =============== */
 /** Media Queries */
