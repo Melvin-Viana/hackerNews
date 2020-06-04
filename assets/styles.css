@@ -14,8 +14,6 @@ header {
   margin:0 auto;
   padding:0;
   background-color: #F6F6EF;
-  /* TODO: REMOVE THIS LATER */
-  height:100vh;
 }
 /* ==================== */
 
@@ -81,7 +79,13 @@ header {
   margin-top:7px;
   margin-bottom:7px;
 }
-
+.pagination{
+  text-align: center;
+  margin: 0 auto;
+}
+.pagination li{
+  margin:10px;
+}
 /* =============== */
 /** Media Queries */
 @media only screen and (min-width:1204px) {

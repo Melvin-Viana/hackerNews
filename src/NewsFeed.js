@@ -1,6 +1,4 @@
 import React from 'react';
-import parse from 'html-react-parser';
-import moment from 'moment';
 import Posts from './Posts';
 const NewsFeed = props => {
 
