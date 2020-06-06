@@ -88,6 +88,12 @@ header {
 .pagination li{
   margin:10px;
 }
+.pagination li a{
+  color:grey;
+}
+.active a{
+  color:#f0932b !important;
+}
 /* =============== */
 /** Media Queries */
 @media only screen and (min-width:1204px) {
