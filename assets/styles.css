@@ -79,9 +79,11 @@ header {
   margin-top:7px;
   margin-bottom:7px;
 }
+
 .pagination{
   text-align: center;
-  margin: 0 auto;
+  width:230px;
+  margin:0 auto;
 }
 .pagination li{
   margin:10px;
