@@ -14,17 +14,39 @@ const App = props => {
   const [numPages, setNumPages] = useState(0);
   const [activePage, setPage] = useState(1);
   useEffect(()=>{
-    console.log(activePage);
-    axios.get(`http://hn.algolia.com/api/v1/search?tags=story&hitsPerPage=30&page=${activePage-1}`)
-    .then(res=>{
-      console.log(res)
-      setResults(res.data.hits);
-      setNumPages(res.data.nbPages);
-      console.log('hey')
-    }).catch(err=>{
-      console.error(err);
-    })
-  },[activePage]);
+    let tags;
+    switch(selectedPost) {
+      case "Stories":
+        tags = "story";
+        break;
+      case "Comments":
+        tags = "comment";
+        break;
+      default:
+        tags = "(story,comment)"
+        break;
+    }
+    console.log(tags);
+    if(selectedSort === "Popularity"){
+
+      axios.get(`http://hn.algolia.com/api/v1/search?tags=${tags}&hitsPerPage=30&page=${activePage-1}`)
+      .then(res=>{
+        setResults(res.data.hits);
+        setNumPages(res.data.nbPages);
+      }).catch(err=>{
+        console.error(err);
+      })
+    } else {
+      // axios.get(`http://hn.algolia.com/api/v1/search?tags=story&hitsPerPage=30&page=${activePage-1}`)
+      // .then(res=>{
+      //   setResults(res.data.hits);
+      //   setNumPages(res.data.nbPages);
+      // }).catch(err=>{
+      //   console.error(err);
+      // })
+    }
+
+  },[activePage,selectedSort,selectedPost]);
   return(
   <React.Fragment>
   <DropDownContainer
@@ -32,7 +54,7 @@ const App = props => {
     selectedTime={selectedTime}
     handleNewsChange={setPost}
     selectedNews={selectedPost}
-    handleSortChange={selectedSort}
+    handleSortChange={setSort}
     selectedSort={selectedSort}
     />
     <NewsFeed newsFeed={currentSearchResults}/>
