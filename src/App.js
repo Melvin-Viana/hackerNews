@@ -26,7 +26,6 @@ const App = props => {
         tags = "(story,comment)"
         break;
     }
-    console.log(tags);
     if(selectedSort === "Popularity"){
 
       axios.get(`http://hn.algolia.com/api/v1/search?tags=${tags}&hitsPerPage=30&page=${activePage-1}`)
@@ -37,13 +36,13 @@ const App = props => {
         console.error(err);
       })
     } else {
-      // axios.get(`http://hn.algolia.com/api/v1/search?tags=story&hitsPerPage=30&page=${activePage-1}`)
-      // .then(res=>{
-      //   setResults(res.data.hits);
-      //   setNumPages(res.data.nbPages);
-      // }).catch(err=>{
-      //   console.error(err);
-      // })
+      axios.get(`http://hn.algolia.com/api/v1/search_by_date?tags=${tags}&hitsPerPage=30&page=${activePage-1}`)
+      .then(res=>{
+        setResults(res.data.hits);
+        setNumPages(res.data.nbPages);
+      }).catch(err=>{
+        console.error(err);
+      })
     }
 
   },[activePage,selectedSort,selectedPost]);
