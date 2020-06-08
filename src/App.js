@@ -5,6 +5,7 @@ import Pagination from 'react-js-pagination';
 import DropDownContainer from './DropDownContainer';
 import moment from 'moment';
 import NewsFeed from './NewsFeed';
+import usePrevious from './helpers/UsePrevious';
 
 const App = props => {
 
@@ -15,8 +16,25 @@ const App = props => {
   const [searchQuery, setSearch] = useState('hello');
   const [numPages, setNumPages] = useState(0);
   const [activePage, setPage] = useState(1);
+  const previousVals = {
+    prevPost: usePrevious(selectedPost),
+    prevTime: usePrevious(selectedTime),
+    prevSort: usePrevious(selectedSort),
+  }
+
+  const hasChanged = (prevVal, current) =>
+  prevVal!== undefined&&prevVal!==current;
   useEffect(()=>{
     let tags;
+    const {prevPost, prevSort, prevTime} = previousVals;
+
+    let sort = hasChanged(prevSort, selectedSort);
+    let time = hasChanged(prevTime, selectedTime);
+    let post = hasChanged(prevPost, selectedPost);
+
+    if(activePage !== 1 &&(sort || time || post)) {
+      return setPage(1);
+    }
     switch(selectedPost) {
       case "Stories":
         tags = "story";
