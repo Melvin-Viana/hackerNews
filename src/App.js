@@ -13,26 +13,28 @@ const App = props => {
   const [selectedSort, setSort] = useState('Popularity');
   const [selectedTime, setTime] = useState('All Time')
   const [currentSearchResults, setResults] = useState([]);
-  const [searchQuery, setSearch] = useState('hello');
   const [numPages, setNumPages] = useState(0);
   const [activePage, setPage] = useState(1);
+  const [searchQuery, setQuery] = useState('')
   const previousVals = {
     prevPost: usePrevious(selectedPost),
     prevTime: usePrevious(selectedTime),
     prevSort: usePrevious(selectedSort),
+    prevSearch:usePrevious(searchQuery)
   }
 
   const hasChanged = (prevVal, current) =>
   prevVal!== undefined&&prevVal!==current;
   useEffect(()=>{
     let tags;
-    const {prevPost, prevSort, prevTime} = previousVals;
+    const {prevPost, prevSort, prevTime, prevSearch} = previousVals;
 
     let sort = hasChanged(prevSort, selectedSort);
     let time = hasChanged(prevTime, selectedTime);
     let post = hasChanged(prevPost, selectedPost);
+    let query = hasChanged(prevSearch, searchQuery);
 
-    if(activePage !== 1 &&(sort || time || post)) {
+    if(activePage !== 1 &&(sort || time || post || query)) {
       return setPage(1);
     }
     switch(selectedPost) {
@@ -47,7 +49,7 @@ const App = props => {
         break;
     }
     let date = (selectedTime==="All Time") ? '' : "&numericFilters=created_at_i>";
-
+    let currQuery = searchQuery !== '' ? '&query='+searchQuery : '';
     switch(selectedTime){
       case 'Last 24h':
         date+=moment().subtract(1, 'days').unix();
@@ -66,8 +68,7 @@ const App = props => {
         break;
     }
     if(selectedSort === "Popularity"){
-
-      axios.get(`http://hn.algolia.com/api/v1/search?tags=${tags}&hitsPerPage=30&page=${activePage-1}${date}`)
+      axios.get(`http://hn.algolia.com/api/v1/search?tags=${tags}${currQuery}&hitsPerPage=30&page=${activePage-1}${date}`)
       .then(res=>{
         setResults(res.data.hits);
         setNumPages(res.data.nbPages);
@@ -75,7 +76,7 @@ const App = props => {
         console.error(err);
       })
     } else {
-      axios.get(`http://hn.algolia.com/api/v1/search_by_date?tags=${tags}&hitsPerPage=30&page=${activePage-1}${date}`)
+      axios.get(`http://hn.algolia.com/api/v1/search_by_date?tags=${tags}${currQuery}&hitsPerPage=30&page=${activePage-1}${date}`)
         .then(res=>{
           setResults(res.data.hits);
           setNumPages(res.data.nbPages);
@@ -84,7 +85,7 @@ const App = props => {
         })
     }
 
-  },[activePage,selectedSort,selectedPost,selectedTime]);
+  },[activePage,selectedSort,selectedPost,selectedTime, searchQuery]);
   return(
   <React.Fragment>
     <div class="header">
@@ -92,7 +93,7 @@ const App = props => {
         <h2>HackerNews</h2>
         <div class="search">
           <i class="fa fa-search fa-2x"></i>
-          <input type="text" placeholder="Search stories by author, title, url or author "/>
+          <input type="text" placeholder="Search stories by author, title, url or author" onChange={e=>setQuery(e.target.value)} value={searchQuery}/>
         </div>
         <i class="fa fa-cog fa-2x"></i>
         <h3>Settings</h3>
