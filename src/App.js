@@ -87,6 +87,17 @@ const App = props => {
   },[activePage,selectedSort,selectedPost,selectedTime]);
   return(
   <React.Fragment>
+    <div class="header">
+        <i class="fa fa-h-square fa-3x"></i>
+        <h2>HackerNews</h2>
+        <div class="search">
+          <i class="fa fa-search fa-2x"></i>
+          <input type="text" placeholder="Search stories by author, title, url or author "/>
+        </div>
+        <i class="fa fa-cog fa-2x"></i>
+        <h3>Settings</h3>
+
+      </div>
   <DropDownContainer
     handleTimeChange={setTime}
     selectedTime={selectedTime}
