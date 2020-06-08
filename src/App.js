@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import DropDownContainer from './DropDownContainer';
+import moment from 'moment';
 import NewsFeed from './NewsFeed';
+
 const App = props => {
 
   const [selectedPost, setPost] = useState('Stories')
@@ -26,9 +28,28 @@ const App = props => {
         tags = "(story,comment)"
         break;
     }
+    let date = (selectedTime==="All Time") ? '' : "&numericFilters=created_at_i>";
+
+    switch(selectedTime){
+      case 'Last 24h':
+        date+=moment().subtract(1, 'days').unix();
+        break;
+      case 'Past Week':
+        date += moment().subtract(1, 'weeks')
+        .unix();
+        break;
+      case 'Past Month':
+        date += moment().subtract(1,'months').unix();
+        break;
+      case 'Past Year':
+        date += moment().subtract(1, 'years').unix();
+        break;
+      default:
+        break;
+    }
     if(selectedSort === "Popularity"){
 
-      axios.get(`http://hn.algolia.com/api/v1/search?tags=${tags}&hitsPerPage=30&page=${activePage-1}`)
+      axios.get(`http://hn.algolia.com/api/v1/search?tags=${tags}&hitsPerPage=30&page=${activePage-1}${date}`)
       .then(res=>{
         setResults(res.data.hits);
         setNumPages(res.data.nbPages);
@@ -36,16 +57,16 @@ const App = props => {
         console.error(err);
       })
     } else {
-      axios.get(`http://hn.algolia.com/api/v1/search_by_date?tags=${tags}&hitsPerPage=30&page=${activePage-1}`)
-      .then(res=>{
-        setResults(res.data.hits);
-        setNumPages(res.data.nbPages);
-      }).catch(err=>{
-        console.error(err);
-      })
+      axios.get(`http://hn.algolia.com/api/v1/search_by_date?tags=${tags}&hitsPerPage=30&page=${activePage-1}${date}`)
+        .then(res=>{
+          setResults(res.data.hits);
+          setNumPages(res.data.nbPages);
+        }).catch(err=>{
+          console.error(err);
+        })
     }
 
-  },[activePage,selectedSort,selectedPost]);
+  },[activePage,selectedSort,selectedPost,selectedTime]);
   return(
   <React.Fragment>
   <DropDownContainer
