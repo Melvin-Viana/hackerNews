@@ -6,6 +6,8 @@ import DropDownContainer from './DropDownContainer';
 import NewsFeed from './NewsFeed';
 import usePrevious from './helpers/UsePrevious';
 import {getDateFilter, getTagsFilter} from './helpers/SearchFilters';
+import { useDebounce } from 'use-debounce';
+
 const App = props => {
 
   const [selectedPost, setPost] = useState('Stories')
@@ -24,20 +26,22 @@ const App = props => {
 
   const hasChanged = (prevVal, current) =>
   prevVal!== undefined&&prevVal!==current;
+  const [debouncedQuery] = useDebounce(searchQuery,800);
+
   useEffect( ()=>{
     const {prevPost, prevSort, prevTime, prevSearch} = previousVals;
     // Previous values hasChanged
     let sort = hasChanged(prevSort, selectedSort);
     let time = hasChanged(prevTime, selectedTime);
     let post = hasChanged(prevPost, selectedPost);
-    let query = hasChanged(prevSearch, searchQuery);
+    let query = hasChanged(prevSearch, debouncedQuery);
 
     if(activePage !== 1 &&(sort || time || post || query)) {
       return setPage(1);
     }
     let tags = getTagsFilter(selectedPost);
-    let currQuery = searchQuery !== '' ? '&query='+searchQuery : '';
-
+    let currQuery = debouncedQuery !== '' ? '&query='+debouncedQuery : '';
+    console.log('hey');
     let date = getDateFilter(selectedTime);
     const fetchData = async (searchBy) => {
       const res = await axios.get(`http://hn.algolia.com/api/v1/${searchBy}?tags=${tags}${currQuery}&hitsPerPage=30&page=${activePage-1}${date}`);
@@ -50,7 +54,7 @@ const App = props => {
       fetchData('search_by_date');
     }
 
-  },[activePage,selectedSort,selectedPost,selectedTime, searchQuery]);
+  },[activePage,selectedSort,selectedPost,selectedTime, debouncedQuery]);
   return(
   <React.Fragment>
     <div class="header">

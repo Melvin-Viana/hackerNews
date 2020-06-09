@@ -35,6 +35,7 @@
     "path": "^0.12.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-js-pagination": "^3.0.3"
+    "react-js-pagination": "^3.0.3",
+    "use-debounce": "^3.4.2"
   }
 }
