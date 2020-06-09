@@ -3,10 +3,9 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Pagination from 'react-js-pagination';
 import DropDownContainer from './DropDownContainer';
-import moment from 'moment';
 import NewsFeed from './NewsFeed';
 import usePrevious from './helpers/UsePrevious';
-
+import {getDateFilter} from './helpers/SearchFilters';
 const App = props => {
 
   const [selectedPost, setPost] = useState('Stories')
@@ -28,7 +27,7 @@ const App = props => {
   useEffect(()=>{
     let tags;
     const {prevPost, prevSort, prevTime, prevSearch} = previousVals;
-
+    // Previous values hasChanged
     let sort = hasChanged(prevSort, selectedSort);
     let time = hasChanged(prevTime, selectedTime);
     let post = hasChanged(prevPost, selectedPost);
@@ -37,6 +36,7 @@ const App = props => {
     if(activePage !== 1 &&(sort || time || post || query)) {
       return setPage(1);
     }
+
     switch(selectedPost) {
       case "Stories":
         tags = "story";
@@ -48,25 +48,10 @@ const App = props => {
         tags = "(story,comment)"
         break;
     }
-    let date = (selectedTime==="All Time") ? '' : "&numericFilters=created_at_i>";
+    // let date = (selectedTime==="All Time") ? '' : "&numericFilters=created_at_i>";
+    let date = getDateFilter(selectedTime);
     let currQuery = searchQuery !== '' ? '&query='+searchQuery : '';
-    switch(selectedTime){
-      case 'Last 24h':
-        date+=moment().subtract(1, 'days').unix();
-        break;
-      case 'Past Week':
-        date += moment().subtract(1, 'weeks')
-        .unix();
-        break;
-      case 'Past Month':
-        date += moment().subtract(1,'months').unix();
-        break;
-      case 'Past Year':
-        date += moment().subtract(1, 'years').unix();
-        break;
-      default:
-        break;
-    }
+
     if(selectedSort === "Popularity"){
       axios.get(`http://hn.algolia.com/api/v1/search?tags=${tags}${currQuery}&hitsPerPage=30&page=${activePage-1}${date}`)
       .then(res=>{
