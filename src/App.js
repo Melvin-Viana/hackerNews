@@ -48,7 +48,7 @@ const App = props => {
     let currQuery = debouncedQuery !== '' ? '&query='+ debouncedQuery : '';
 
     const fetchData = async (searchBy) => {
-      const res = await axios.get(`http://hn.algolia.com/api/v1/${searchBy}?tags=${tags}${currQuery}&hitsPerPage=30&page=${activePage-1}${date}`);
+      const res = await axios.get(`https://hn.algolia.com/api/v1/${searchBy}?tags=${tags}${currQuery}&hitsPerPage=30&page=${activePage-1}${date}`);
       setResults(res.data.hits);
       setNumPages(res.data.nbPages);
     }
