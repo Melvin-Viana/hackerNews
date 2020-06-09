@@ -20,6 +20,18 @@ const getDateFilter = (selectedTime) =>{
       break;
   }
   return date;
-
 }
-export {getDateFilter};
+const getTagsFilter = (selectedPost) => {
+    switch(selectedPost) {
+      case "Stories":
+        return "story";
+        break;
+      case "Comments":
+        return "comment";
+        break;
+      default:
+        return "(story,comment)"
+        break;
+    }
+}
+export {getDateFilter, getTagsFilter};

@@ -5,7 +5,7 @@ import Pagination from 'react-js-pagination';
 import DropDownContainer from './DropDownContainer';
 import NewsFeed from './NewsFeed';
 import usePrevious from './helpers/UsePrevious';
-import {getDateFilter} from './helpers/SearchFilters';
+import {getDateFilter, getTagsFilter} from './helpers/SearchFilters';
 const App = props => {
 
   const [selectedPost, setPost] = useState('Stories')
@@ -24,8 +24,7 @@ const App = props => {
 
   const hasChanged = (prevVal, current) =>
   prevVal!== undefined&&prevVal!==current;
-  useEffect(()=>{
-    let tags;
+  useEffect( ()=>{
     const {prevPost, prevSort, prevTime, prevSearch} = previousVals;
     // Previous values hasChanged
     let sort = hasChanged(prevSort, selectedSort);
@@ -36,38 +35,19 @@ const App = props => {
     if(activePage !== 1 &&(sort || time || post || query)) {
       return setPage(1);
     }
-
-    switch(selectedPost) {
-      case "Stories":
-        tags = "story";
-        break;
-      case "Comments":
-        tags = "comment";
-        break;
-      default:
-        tags = "(story,comment)"
-        break;
-    }
-    // let date = (selectedTime==="All Time") ? '' : "&numericFilters=created_at_i>";
-    let date = getDateFilter(selectedTime);
+    let tags = getTagsFilter(selectedPost);
     let currQuery = searchQuery !== '' ? '&query='+searchQuery : '';
 
+    let date = getDateFilter(selectedTime);
+    const fetchData = async (searchBy) => {
+      const res = await axios.get(`http://hn.algolia.com/api/v1/${searchBy}?tags=${tags}${currQuery}&hitsPerPage=30&page=${activePage-1}${date}`);
+      setResults(res.data.hits);
+      setNumPages(res.data.nbPages);
+    }
     if(selectedSort === "Popularity"){
-      axios.get(`http://hn.algolia.com/api/v1/search?tags=${tags}${currQuery}&hitsPerPage=30&page=${activePage-1}${date}`)
-      .then(res=>{
-        setResults(res.data.hits);
-        setNumPages(res.data.nbPages);
-      }).catch(err=>{
-        console.error(err);
-      })
+      fetchData('search');
     } else {
-      axios.get(`http://hn.algolia.com/api/v1/search_by_date?tags=${tags}${currQuery}&hitsPerPage=30&page=${activePage-1}${date}`)
-        .then(res=>{
-          setResults(res.data.hits);
-          setNumPages(res.data.nbPages);
-        }).catch(err=>{
-          console.error(err);
-        })
+      fetchData('search_by_date');
     }
 
   },[activePage,selectedSort,selectedPost,selectedTime, searchQuery]);
